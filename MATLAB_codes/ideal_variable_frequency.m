@@ -22,8 +22,8 @@ t_line = (0:2*pi*t_s:simulation_time_constant);
 
 %Señal continua con delay pi/2
 B = 1; 
-A = 0.75;
-delay = pi/6; 
+A = 1;
+delay = pi/2; 
 
 t_line_initial = (0:2*pi*t_s:5*tau);
 x_signal_initial = A * sin(2*pi*f_max*(t_line_initial+tau*(exp(-t_line_initial/tau)-1)));
