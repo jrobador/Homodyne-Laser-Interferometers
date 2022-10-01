@@ -6,10 +6,10 @@ counter = 1;
         else
             if y(i) > 0
                 if (x_mem < 0 && x(i) > 0)
-                    counter = counter + 1;
+                    counter = counter - 1;
                 end
                 if (x_mem > 0 && x(i) < 0)
-                    counter = counter - 1;
+                    counter = counter + 1;
                 end                
             end
             x_mem = x(i);
@@ -25,7 +25,7 @@ counter = 1;
    if x(end) > 0
        phi_t1 = atan (y(end)/x(end)) + 2 * pi * counter;
    else
-       phi_t1 = atan (y(end)/x(end)) + pi + 2 * pi * counter ;
+       phi_t1 = atan (y(end)/x(end)) + pi + 2 * pi * counter;
    end
    
    longitud = 550e-9/(4*pi) * (phi_t1-phi_t0);
