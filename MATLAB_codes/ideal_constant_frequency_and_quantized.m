@@ -7,7 +7,7 @@ clc
 f_max =   50e3;
 
 %Parametro de simulación
-nciclos         = 5;                %Cantidad de ciclos simulados
+nciclos         = 100;                %Cantidad de ciclos simulados
 simulation_time = (nciclos+0.2)*2*pi/f_max; %Tiempo de simulacion
 
 
@@ -66,7 +66,6 @@ legend('muestras en discreto','valores continuos','Valor final')
 
 t_line_continua = [t_line_continua,(t_line_continua(end): 2*pi*t_s_continua:t_line_continua(end)+(npoints_continuo-1)*2*pi*t_s_continua)];
 t_line_discreto = [t_line_discreto,(t_line_discreto(end): 2*pi*t_s_discreto:t_line_discreto(end)+(npoints_discreto-1)*2*pi*t_s_discreto)];
-
 
 figure
 subplot(211)

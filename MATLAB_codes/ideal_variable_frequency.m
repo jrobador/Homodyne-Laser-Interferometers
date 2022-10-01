@@ -9,8 +9,6 @@ tau = 15e-5;
 %Parametro de simulación
 nciclos         = 75;                %Cantidad de ciclos simulados
 
-
-
 %Factor de sobremuestreo continuo
 npoints = 500; %Cantidad de muestras que se toman en cada ciclo (en tiempo continuo)
 f_s = npoints * f_max;
@@ -23,8 +21,6 @@ B_y = B_x;
 delay = pi/2;
 %Señal continua con delay pi/2
 [x_signal, y_signal, t_line] = quadrature_signal_generator(t_s,tau,nciclos,f_max,A_x,A_y,B_x,B_y,delay);
-
-
 
 figure %%JC cambio de figura
 plot(x_signal,y_signal,'-')
@@ -41,7 +37,6 @@ ylim = [-1.5,1.5];
 
 % t_line = [t_line,(t_line(end): 2*pi*t_s:t_line(end)+(npoints-1)*2*pi*t_s)];
 
-
 figure
 plot(t_line,x_signal,'-')
 
@@ -49,4 +44,6 @@ hold all
 plot(t_line,y_signal,'-r')
 xlabel('tiempo')
 legend('X','Y')
+
+longitud = a_tan2(x_signal,y_signal);
 
