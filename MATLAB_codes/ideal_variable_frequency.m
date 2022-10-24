@@ -14,10 +14,13 @@ npoints = 500; %Cantidad de muestras que se toman en cada ciclo (en tiempo conti
 f_s = npoints * f_max;
 t_s= 1/f_s;
 
-A_x = 1;
-A_y = A_x;
+% x_signal =  A_x + B_x * cos(phi_t);
+% y_signal =  A_x + B_x * cos(phi_t+phase_initial);
+
+A_x = 0; 
+A_y = 0;
 B_x = 1;
-B_y = B_x;
+B_y = 1;
 delay = 0;
 phase_initial =0;
 %Señal continua con delay pi/2

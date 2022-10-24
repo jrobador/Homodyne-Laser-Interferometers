@@ -1,35 +1,32 @@
-function [x_signal, y_signal, t_line] = quadrature_signal_generator(t_s,tau,nciclos,f_max,A_x,A_y,B_x,B_y,delay)
+function [x_signal, y_signal, t_line] = quadrature_signal_generator(t_s,tau,nciclos,phase_initial,f_max,A_x,A_y,B_x,B_y,delay)
 %UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
-if(tau ~= 0)
+
+if(phase_initial == 0 || phase_initial == pi/2 || phase_initial == pi || phase_initial == 3*pi/2)
+    phase_initial =phase_initial + 1e-4;
+
 t_line_initial = (0:2*pi*t_s:5*tau);
-x_signal_initial = A_x + B_x * cos(2*pi*f_max*(t_line_initial+tau*(exp(-t_line_initial/tau)-1)));
-y_signal_initial = A_y + B_y * sin(2*pi*f_max*(t_line_initial+tau*(exp(-t_line_initial/tau)-1))+delay);
+x_signal_initial = A_x(1,5*tau) + B_x(1,5*tau).* cos(2*pi*f_max*(t_line_initial+tau*(exp(-t_line_initial/tau)-1))+phase_initial);
+y_signal_initial = A_y(1,5*tau) + B_y(1,5*tau).* sin(2*pi*f_max*(t_line_initial+tau*(exp(-t_line_initial/tau)-1))+phase_initial+delay(1,50*tau));
 
 syms t_symbol_1;
-t_delay_for_continuity_1 = double(vpasolve(sin(2*pi*f_max*(t_symbol_1-t_line_initial(end))) == y_signal_initial(end),t_symbol_1,[0 200]));
+t_delay_for_continuity_1 = double(vpasolve(A_y(lenght(t_line_initial) + B_y.*sin(2*pi*f_max*t_symbol_1+phase_initial+delay) == y_signal_initial(end),t_symbol_1));
 
 t_line_constant = (t_line_initial(end):2*pi*t_s:t_line_initial(end)+nciclos/f_max); %Tiempo de simulacion);
-x_signal_constant = A_x + B_x *cos(2*pi*f_max*(t_line_constant-t_line_initial(end)+t_delay_for_continuity_1));
-y_signal_constant = A_y + B_y*sin(2*pi*f_max*(t_line_constant-t_line_initial(end)+t_delay_for_continuity_1)+delay);%%JC Había error acá con un paréntesis, Hacia que no coincidan los retardos
+x_signal_constant = A_x + B_x.*cos(2*pi*f_max*(t_line_constant-t_line_initial(end)+t_delay_for_continuity_1)+phase_initial);
+y_signal_constant = A_y + B_y.*sin(2*pi*f_max*(t_line_constant-t_line_initial(end)+t_delay_for_continuity_1)+delay+phase_initial);%%JC Había error acá con un paréntesis, Hacia que no coincidan los retardos
 
 syms t_symbol_2;
-t_delay_for_continuity_2 = double(vpasolve(cos(2*pi*f_max*tau*(1-exp(-t_symbol_2/tau))) == x_signal_constant(end),t_symbol_2,[0 200]));
+t_delay_for_continuity_2 = double(vpasolve(A_y + B_y.*sin(2*pi*f_max*tau*(1-exp(-t_symbol_2/tau))+phase_initial+delay) == y_signal_constant(end),t_symbol_2));
 
 t_line_final = (t_line_constant(end):2*pi*t_s:t_line_constant(end)+10*tau);
-x_signal_final = A_x + B_x * cos(2*pi*f_max*tau*(1-exp(-(t_line_final-t_line_constant(end)+t_delay_for_continuity_2)/tau)));
-y_signal_final = A_y + B_y * sin(2*pi*f_max*tau*(1-exp(-(t_line_final-t_line_constant(end)+t_delay_for_continuity_2)/tau))+delay);
+x_signal_final = A_x + B_x.* cos(2*pi*f_max*tau*(1-exp(-(t_line_final-t_line_constant(end)+t_delay_for_continuity_2)/tau))+phase_initial);
+y_signal_final = A_y + B_y.* sin(2*pi*f_max*tau*(1-exp(-(t_line_final-t_line_constant(end)+t_delay_for_continuity_2)/tau))+delay+phase_initial);
 
 x_signal =[x_signal_initial,x_signal_constant,x_signal_final];
 y_signal =[y_signal_initial,y_signal_constant,y_signal_final];
 t_line = [t_line_initial,t_line_constant,t_line_final];
 
-else
-t_line = (0:2*pi*t_s:(nciclos+0.2)*2*pi/f_max); %Tiempo de simulacion);
-x_signal = A_x + B_x *cos(2*pi*f_max*(t_line));
-y_signal = A_y + B_y*sin(2*pi*f_max*(t_line+delay));%%JC Había error acá con un paréntesis, Hacia que no coincidan los retardos
- 
-end
 end
 
 
