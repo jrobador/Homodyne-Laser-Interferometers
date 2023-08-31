@@ -1,32 +1,53 @@
 function [longitud] = a_tan2(x,y)
-counter = 1;
-    for i = 1:1:length(x)
+counter = 0;
+    for i = 1:1:length(y)
         if i == 1
-            x_mem = x(i);
+            y_mem = y(i);
         else
-            if y(i) > 0
-                if (x_mem < 0 && x(i) > 0)
-                    counter = counter - 1;
-                end
-                if (x_mem > 0 && x(i) < 0)
+            if x(i) >= 0
+                if (y_mem < 0 && y(i) >= 0)
                     counter = counter + 1;
+                end
+                if (y_mem > 0 && y(i) <= 0)
+                    counter = counter - 1;
                 end                
             end
-            x_mem = x(i);
+            y_mem = y(i);
         end
     end
    
-   if x(1) > 0
+   if (x(1) > 0 && y(1) > 0)
        phi_t0 = atan (y(1)/x(1));
-   else
+   end
+       
+   if (x(1) < 0 && y(1) > 0)
        phi_t0 = atan (y(1)/x(1)) + pi;
    end
    
-   if x(end) > 0
+   if (x(1) < 0 && y(1) < 0)
+       phi_t0 = atan (y(1)/x(1)) + pi;
+   end
+   
+   if (x(1) > 0 && y(1) < 0)
+       phi_t0 = atan (y(1)/x(1)) + 2*pi;
+   end
+   
+   if (x(end) > 0 && y(end) > 0)
        phi_t1 = atan (y(end)/x(end)) + 2 * pi * counter;
-   else
+   end
+       
+   if (x(end) < 0 && y(end) > 0)
        phi_t1 = atan (y(end)/x(end)) + pi + 2 * pi * counter;
    end
+   
+   if (x(end) < 0 && y(end) < 0)
+       phi_t1 = atan (y(end)/x(end)) + pi + 2 * pi * counter;
+   end
+   
+   if (x(end) > 0 && y(end) < 0)
+       phi_t1 = atan (y(end)/x(end)) + 2*pi + 2 * pi * counter;
+   end   
+
    
    longitud = 550e-9/(4*pi) * (phi_t1-phi_t0);
 end
