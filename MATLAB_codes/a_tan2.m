@@ -16,35 +16,35 @@ counter = 0;
         end
     end
    
-   if (x(1) > 0 && y(1) > 0)
+   if (x(1) > 0 && y(1) >= 0)
        phi_t0 = atan (y(1)/x(1));
    end
        
-   if (x(1) < 0 && y(1) > 0)
+   if (x(1) <= 0 && y(1) > 0)
        phi_t0 = atan (y(1)/x(1)) + pi;
    end
    
-   if (x(1) < 0 && y(1) < 0)
+   if (x(1) < 0 && y(1) <= 0)
        phi_t0 = atan (y(1)/x(1)) + pi;
    end
    
-   if (x(1) > 0 && y(1) < 0)
+   if (x(1) >= 0 && y(1) < 0)
        phi_t0 = atan (y(1)/x(1)) + 2*pi;
    end
    
-   if (x(end) > 0 && y(end) > 0)
+   if (x(end) > 0 && y(end) >= 0)
        phi_t1 = atan (y(end)/x(end)) + 2 * pi * counter;
    end
        
-   if (x(end) < 0 && y(end) > 0)
+   if (x(end) <= 0 && y(end) > 0)
        phi_t1 = atan (y(end)/x(end)) + pi + 2 * pi * counter;
    end
    
-   if (x(end) < 0 && y(end) < 0)
+   if (x(end) < 0 && y(end) <= 0)
        phi_t1 = atan (y(end)/x(end)) + pi + 2 * pi * counter;
    end
    
-   if (x(end) > 0 && y(end) < 0)
+   if (x(end) >= 0 && y(end) < 0)
        phi_t1 = atan (y(end)/x(end)) + 2*pi + 2 * pi * counter;
    end   
 
