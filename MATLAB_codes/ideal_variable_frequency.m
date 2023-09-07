@@ -17,18 +17,18 @@ t_s_continuo= 1/f_s_continuo;
 % x_continuo =  A_x + B_x * cos(phi_t);
 % y_continuo =  A_y + B_y * cos(phi_t+phase_initial);
 
-A_x = 0.5; 
-A_y = 0.6; 
-B_x = 1.2; 
-B_y = 0.8; 
-delay = pi/5;
+A_x = 0; 
+A_y = 0; 
+B_x = 1; 
+B_y = 1; 
+delay =0;
 phase_initial = pi/6;
 %Señal continua con delay pi/2
 [x_continuo, y_continuo, t_line_continuo] = quadrature_signal_generator(t_s_continuo,tau,nciclos,phase_initial,f_max,A_x,A_y,B_x,B_y,delay);
 
 
 %Factor de sobremuestreo discreto
-npoints_discreto = 5;
+npoints_discreto = 2;
 f_s_discreto = npoints_discreto * f_max;
 t_s_discreto = 1/f_s_discreto;
 
@@ -74,8 +74,13 @@ legend('Fase','Fase final','Fase inicial')
 hold all
 %ylim = [-1.5,1.5];
 
-displacement_without_correction_continuo = a_tan2(x_continuo,y_continuo);
-displacement_without_correction_discreto = a_tan2(x_discreto,y_discreto);
+displacement_without_correction_continuo = optimal_counter_test_a_tan2(x_continuo,y_continuo);
+displacement_without_correction_discreto = optimal_counter_test_a_tan2(x_discreto,y_discreto);
+
+
+displacement_without_correction_continuo_original = a_tan2(x_continuo,y_continuo);
+displacement_without_correction_discreto_original = a_tan2(x_discreto,y_discreto);
+
 
 %DC Offset correction
 
@@ -110,7 +115,10 @@ hold all
 % DC Offset correction como en la FPGA
 % DC phase correction como en la FPGA
 
-displacement_with_correction_discreto = a_tan2(x_discreto_amplitude_correction,y_discreto_amplitude_correction);
+displacement_with_correction_discreto = optimal_counter_test_a_tan2(x_discreto_amplitude_correction,y_discreto_amplitude_correction);
+displacement_with_correction_discreto_original = a_tan2(x_discreto_amplitude_correction,y_discreto_amplitude_correction);
+
+
 
 error_percentage = displacement_without_correction_discreto/displacement_with_correction_discreto;
 error_distance  = displacement_with_correction_discreto -displacement_without_correction_discreto;
@@ -131,4 +139,5 @@ plot(x_continuo(end),y_continuo(end),'og')
 legend('muestras en discreto','valores continuos','Valor final')
 %Comparación entre señal ideal y señal muestreada en funcion del tiempo
 
+axis equal
 
