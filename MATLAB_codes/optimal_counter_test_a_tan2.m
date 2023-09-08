@@ -1,29 +1,37 @@
-function [longitud] = optimal_counter_test_a_tan2(x,y)
+function [longitud,counter_vector] = optimal_counter_test_a_tan2(x,y)
+counter_vector(1:length(x)) = 0;
 counter = 0;
+mem_length = 1 ;
+y_mem = 0;
     for i = 1:1:length(y)
-        if i<20
-            y_mem(1:4) = 0;
+        if i<=mem_length
+            x_mem(1:mem_length) = 0;
         else 
-            y_mem = y(i-3:i-1);
-        
-        if(all(y_mem >= 0) || all(y_mem < 0))
-            if x(i) >= 0
-                if (y_mem(end) < 0 && y(i) >= 0)
-                    counter = counter + 1;
-                    counter_add = 1;
-                end
-                if (y_mem(end) > 0 && y(i) <= 0)
-                    counter = counter - 1;
-                    counter_add = -1;
+            x_mem = x(i-mem_length:i-1);
 
-                end                
+            if(all(x_mem >= 0))
+                if x(i) >= 0
+                    if (y_mem < 0 && y(i) >= 0)
+                        counter = counter + 1;
+                        counter_add = 1;
+                    end
+                    if (y_mem > 0 && y(i) <= 0)
+                        counter = counter - 1;
+
+                        counter_add = -1;
+                    end                
+                end
+            else
+            if x(i) >= 0
+                if(y_mem < 0 && y(i) >= 0)
+                    counter = counter + counter_add;
+                end
             end
-        else
-            if(y_mem(end) < 0 && y(i) >= 0)
-                counter = counter + counter_add;
             end
         end
-        end
+        counter_vector(i) = counter;
+        y_mem = y(i);
+
     end
    
    if (x(1) > 0 && y(1) >= 0)

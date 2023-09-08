@@ -39,7 +39,7 @@ t_line_continuo = (0:T_s_continuo:T_s_continuo*(length(x_continuo)-1));
 
 %Filtrado analogico
 % Frecuencia de corte para el filtro pasabajos (un poco menos de 130 kHz)
-f_corte = 150e3; 
+f_corte = 130e3; 
 % Orden del filtro (puedes ajustar este valor según tus necesidades)
 orden = 6;
 
@@ -52,7 +52,7 @@ y_continuo = filter(b, a, y_continuo);
 
 
 %Factor de sobremuestreo discreto
-npoints_discreto = 3;
+npoints_discreto = 5;
 f_s_discreto = npoints_discreto * f_max;
 t_s_discreto = 1/f_s_discreto;
 
@@ -104,8 +104,8 @@ hold all
 
 
 
-[displacement_without_correction_discreto_original,counter_3] = a_tan2(x_discreto,y_discreto);
-[displacement_without_correction_discreto,counter_4] = optimal_counter_test_a_tan2(x_discreto,y_discreto);
+displacement_without_correction_discreto_original = a_tan2(x_discreto,y_discreto);
+displacement_without_correction_discreto = optimal_counter_test_a_tan2(x_discreto,y_discreto);
 
 %Representación de figuras de Lissajous con delay pi/2
 
@@ -163,11 +163,7 @@ grid on
 %Grafico evoulucion contadores
 
 figure
-plot(t_line_continuo,counter_1)
+plot(counter_1,)
 hold all 
-plot(t_line_continuo,counter_2)
-hold all 
-plot(t_line_discreto,counter_3)
-hold all 
-plot(t_line_discreto,counter_4)
-legend('counter 1 original continuo','counter 2 continuo','counter_3 original discreto', 'counter 4 discreto')
+plot(counter_2,t_line_continuo)
+legend('counter_1_original','counter_2')
