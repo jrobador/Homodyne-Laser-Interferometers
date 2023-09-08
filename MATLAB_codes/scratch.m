@@ -1,14 +1,9 @@
 figure
-subplot(211)
-stem(x_discreto)
-hold all
-plot(x_continuo,'-')
-xlabel('tiempo')
-legend('x discreto','x continuo')
-subplot(212)
-stem(t_line_discreto,y_discreto)
-hold all
-plot(t_line_continuo,y_continuo,'-')
-xlabel('tiempo')
-legend('y discreto','y continuo')
-grid on
+plot(counter_1)
+hold all 
+plot(counter_2)
+hold all 
+plot(counter_3)
+hold all 
+plot(counter_4)
+legend('counter 1 original continuo','counter 2 continuo','counter_3 original discreto', 'counter 4 discreto')
