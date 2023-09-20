@@ -1,6 +1,6 @@
-clear all
-close all
-clc
+%clear all
+%close all
+%clc
 
 %Frecuencia de muestreo:
 f_max =   150e3;
@@ -23,8 +23,8 @@ datos = csvread(nombreArchivo);
 x_continuo = datos(:, 1)';
 y_continuo = datos(:, 2)';
 
-x_continuo = x_continuo(1:fix(0.8*length(x_continuo)));
-y_continuo = y_continuo(1:fix(0.8*length(y_continuo)));
+x_continuo = x_continuo(1:fix(1*length(x_continuo)));
+y_continuo = y_continuo(1:fix(1*length(y_continuo)));
 
 x_continuo = x_continuo - DC_x;
 y_continuo = y_continuo - DC_y;
@@ -52,7 +52,7 @@ y_continuo = filter(b, a, y_continuo);
 
 
 %Factor de sobremuestreo discreto
-npoints_discreto = 3;
+npoints_discreto = 2.7;
 f_s_discreto = npoints_discreto * f_max;
 t_s_discreto = 1/f_s_discreto;
 
