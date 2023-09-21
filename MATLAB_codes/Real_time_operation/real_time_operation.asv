@@ -10,11 +10,10 @@ function [discrete_displacement,continuous_displacement,actual_velocity] = real_
     global x_mem;
     global cycle_counter_mem;
     global phi_t0;
-    global actual_velocity_mem;
-    
+    global cycle_counter;
+    global cycle_counter;
+    global cycle_counter;
 
-
-    
     %--------- A partir de aca es el código en tiempo real -------------
     % Bloquear funcionamiento hasta ingreso de nuevas muestras del ADC
     ADC_NEW_SAMPLES = 1;
@@ -27,10 +26,10 @@ function [discrete_displacement,continuous_displacement,actual_velocity] = real_
         y_mem = 0;
         cycle_counter_mem = 0;
 
-        phi_t0 = phase_calculation(x_actual,y_actual,0);
+        phi_t0 = phase_calculation(x_actual,y_actual);
 
         cycle_counter_direction = 1;
-        actual_velocity_mem = 0;
+        actual_velocity = 0;
 
     end
 
@@ -52,10 +51,11 @@ function [discrete_displacement,continuous_displacement,actual_velocity] = real_
 
 
             velocity_counter_update = 0;
-            actual_velocity_mem = (cycle_counter - cycle_counter_mem) * 275e-9 / 0.005;
+            actual_velocity = (cycle_counter - cycle_counter_mem) * 275e-9 / 0.005;
             cycle_counter_mem = cycle_counter;
+        else
         end
-        actual_velocity = actual_velocity_mem;
+
 
         phi_actual = phase_calculation(x_actual,y_actual, cycle_counter);
 

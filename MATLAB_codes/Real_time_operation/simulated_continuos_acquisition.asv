@@ -6,21 +6,6 @@ clc
 f_max =   150e3;
 tau = 15e-5;
 
-global cycle_counter_direction;
-global T_s_adc;
-global x_mem_length;
-global counter;
-global velocity_counter_update;
-global cycle_counter;
-global y_mem;
-global x_mem;
-global cycle_counter_mem;
-global phi_t0;
-global actual_velocity_mem;
-
-
-
-
 % DC_x = mean(x_continuo(fix(0.4*length(x_continuo)):fix(0.7*length(x_continuo))));
 % DC_y = mean(y_continuo(fix(0.4*length(y_continuo)):fix(0.7*length(y_continuo))));
 DC_x = 2.2879;
@@ -116,23 +101,12 @@ actual_velocity_vector = (1:length(x_discreto));
 
 reset = 1;
 x_mem_length = 3;
-T_s_adc = t_s_discreto;
+ADC_NEW_SAMPLES = 1;
 
-for i = 1:1:length(x_discreto)
+    for i = 1:1:length(x)
         
-    
-    if(i == 1)
-        reset = 1;
-    else
-        reset = 0;
-    end
-    [discrete_displacement,continuous_displacement,actual_velocity] = real_time_operation(x_discreto(i),y_discreto(i),reset);
-    
-    discrete_displacement_vector(i) = discrete_displacement;
-    continuous_displacement_vector(i) = continuous_displacement;
-    actual_velocity_vector(i) = actual_velocity;
+[discrete_displacement_vector,continuous_displacement_vector,actual_velocity_vector] = real_time_operation(x_discreto,y_discreto,t_s_discreto);
 
-end
 %Representación de figuras de Lissajous con delay pi/2
 
 figure
