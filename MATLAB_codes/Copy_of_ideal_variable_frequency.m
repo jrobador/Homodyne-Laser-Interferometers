@@ -52,7 +52,7 @@ y_continuo = filter(b, a, y_continuo);
 
 
 %Factor de sobremuestreo discreto
-npoints_discreto = 2.7;
+npoints_discreto = 4;
 f_s_discreto = npoints_discreto * f_max;
 t_s_discreto = 1/f_s_discreto;
 

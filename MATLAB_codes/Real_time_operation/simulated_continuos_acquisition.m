@@ -74,7 +74,7 @@ t_line_continuo = (0:T_s_continuo:T_s_continuo*(length(x_continuo)-1));
 
 
 %Factor de sobremuestreo discreto
-npoints_discreto = 3;
+npoints_discreto = 4;
 f_s_discreto = npoints_discreto * f_max;
 t_s_discreto = 1/f_s_discreto;
 
