@@ -8,9 +8,10 @@ function [discrete_displacement,continuous_displacement,actual_velocity] = real_
     global cycle_counter;
     global y_mem;
     global x_mem;
-    global cycle_counter_mem;
+    global continuous_displacement_mem;
     global phi_t0;
     global actual_velocity_mem;
+    global velocity_time_update;
     
 
 
@@ -25,7 +26,7 @@ function [discrete_displacement,continuous_displacement,actual_velocity] = real_
         velocity_counter_update = 0;
         x_mem(1:x_mem_length) = 0;
         y_mem = 0;
-        cycle_counter_mem = 0;
+        continuous_displacement_mem = 0;
 
         phi_t0 = phase_calculation(x_actual,y_actual,0);
 
@@ -39,7 +40,7 @@ function [discrete_displacement,continuous_displacement,actual_velocity] = real_
         counter = counter + 1 ; 
         velocity_counter_update = velocity_counter_update + 1;
 
-        actual_time = counter*T_s_adc;              
+        %actual_time = counter*T_s_adc;              
 
 
 
@@ -48,20 +49,20 @@ function [discrete_displacement,continuous_displacement,actual_velocity] = real_
         [cycle_counter,cycle_counter_direction] = cycle_counter_calculation(x_actual,y_actual,x_mem,y_mem,cycle_counter_direction,cycle_counter);
 
 
-        if(velocity_counter_update * T_s_adc >= 0.005) % 50 milisegundos
-
-
-            velocity_counter_update = 0;
-            actual_velocity_mem = (cycle_counter - cycle_counter_mem) * 275e-9 / 0.005;
-            cycle_counter_mem = cycle_counter;
-        end
-        actual_velocity = actual_velocity_mem;
 
         phi_actual = phase_calculation(x_actual,y_actual, cycle_counter);
 
 
-        discrete_displacement = 275e-9 * cycle_counter;
-        continuous_displacement = 550e-9/(4*pi) * (phi_actual-phi_t0);        
+        discrete_displacement = 250e-9 * cycle_counter;
+        continuous_displacement = 500e-9/(4*pi) * (phi_actual-phi_t0);        
+
+        if(velocity_counter_update * T_s_adc >= velocity_time_update) % 50 milisegundos
+
+            velocity_counter_update = 0;
+            actual_velocity_mem = (continuous_displacement - continuous_displacement_mem) / velocity_time_update;
+            continuous_displacement_mem = continuous_displacement;
+        end
+        actual_velocity = actual_velocity_mem;
 
 
         % Actualizacion de memorias

@@ -1,6 +1,6 @@
-clear all
-close all
-clc
+%clear all
+%close all
+%clc
 
 %Frecuencia de muestreo:
 f_max =   150e3;
@@ -11,10 +11,10 @@ global T_s_adc;
 global x_mem_length;
 global counter;
 global velocity_counter_update;
+global velocity_time_update;
 global cycle_counter;
 global y_mem;
 global x_mem;
-global cycle_counter_mem;
 global phi_t0;
 global actual_velocity_mem;
 
@@ -29,20 +29,29 @@ DC_y = 2.4051;
 nciclos         = 75;                %Cantidad de ciclos simulados
 
 
-T_s_continuo = 5e-7;
+T_s_continuo = 1e-6;
 f_s_continuo = 1/T_s_continuo;
+velocity_time_update = 1e-3;
 
+% Define the CSV file name
+nombreArchivo = '../Docs/senales_del_5_10_23/senal_4/RefCurve_2023-10-05_1_154212.Wfm.bin';
+% Open the file
+fileID = fopen(nombreArchivo, 'rb'); % Use 'rb' for binary files
 
-% Define el nombre del archivo CSV
-nombreArchivo = '../Docs/RefCurve_2023-06-15_1_192016.csv';
+% Check if fopen was successful
+if fileID == -1
+    error('Failed to open the file. Check the file path and permissions.');
+end
 
-% Lee el archivo CSV
-datos = csvread(nombreArchivo);
+% Read the binary data from the file
+datos = fread(fileID, [2 inf], 'float');
 
-% Extrae las dos columnas en vectores separados
-x_continuo = datos(:, 1)';
-y_continuo = datos(:, 2)';
+% Close the file
+fclose(fileID);
 
+% Extract the two columns into separate vectors
+x_continuo = datos(1, fix(length(datos)/10)+1250000:fix(length(datos)*4/10));
+y_continuo = datos(2, fix(length(datos)/10)+1250000:fix(length(datos)*4/10));
 
 %Filtrado analogico
 % Frecuencia de corte para el filtro pasabajos (un poco menos de 130 kHz)
@@ -54,8 +63,8 @@ orden = 6;
 [b, a] = butter(orden, f_corte / (f_s_continuo / 2), 'low');
 
 % Aplica el filtro a las señales x_continuo e y_continuo
-%x_continuo = filter(b, a, x_continuo);
-%y_continuo = filter(b, a, y_continuo);
+x_continuo = filter(b, a, x_continuo);
+y_continuo = filter(b, a, y_continuo);
 
 
 

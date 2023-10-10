@@ -17,18 +17,18 @@ t_s_continuo= 1/f_s_continuo;
 % x_continuo =  A_x + B_x * cos(phi_t);
 % y_continuo =  A_y + B_y * cos(phi_t+phase_initial);
 
-A_x = 0; 
-A_y = 0; 
-B_x = 1; 
-B_y = 1; 
-delay =0;
+A_x = 0.3; 
+A_y = 0.2; 
+B_x = 1.3; 
+B_y = 0.7; 
+delay = 27*pi/180;
 phase_initial = pi/6;
 %Señal continua con delay pi/2
 [x_continuo, y_continuo, t_line_continuo] = quadrature_signal_generator(t_s_continuo,tau,nciclos,phase_initial,f_max,A_x,A_y,B_x,B_y,delay);
 
 
 %Factor de sobremuestreo discreto
-npoints_discreto = 2;
+npoints_discreto = 4;
 f_s_discreto = npoints_discreto * f_max;
 t_s_discreto = 1/f_s_discreto;
 
