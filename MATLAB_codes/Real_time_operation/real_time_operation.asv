@@ -83,7 +83,7 @@ function [discrete_displacement,continuous_displacement,actual_velocity] = real_
         [cycle_counter,cycle_counter_direction] = cycle_counter_calculation(x_mem(end),y_mem(end),x_mem(end-1-(x_mem_length_algorithm-1):end-1),y_mem(end-1-(y_mem_length_algorithm-1):end-1),cycle_counter_direction,cycle_counter);
 
 
-        if(abs(actual_velocity_mem) <= 6.25)
+        if(abs(actual_velocity_mem) <= v_locked)
             x_mem_filtered = filter(b,a,x_mem);
             y_mem_filtered = filter(b,a,y_mem);
             phi_actual = phase_calculation(dot(b, x_mem),dot(b, y_mem), cycle_counter);

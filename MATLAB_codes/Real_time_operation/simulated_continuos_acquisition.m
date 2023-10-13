@@ -1,22 +1,24 @@
-%clear all
-%close all
-%clc
+clear all
+close all
+clc
 
 %Frecuencia de muestreo:
 f_max =   150e3;
 tau = 15e-5;
 
-global cycle_counter_direction;
-global T_s_adc;
-global x_mem_length;
-global counter;
-global velocity_counter_update;
-global velocity_time_update;
-global cycle_counter;
-global y_mem;
-global x_mem;
-global phi_t0;
-global actual_velocity_mem;
+% global cycle_counter_direction;
+  global T_s_adc;
+  global counter;
+
+% global x_mem_length;
+% global counter;
+% global velocity_counter_update;
+% global velocity_time_update;
+% global cycle_counter;
+% global y_mem;
+% global x_mem;
+% global phi_t0;
+% global actual_velocity_mem;
 
 
 
@@ -31,7 +33,6 @@ nciclos         = 75;                %Cantidad de ciclos simulados
 
 T_s_continuo = 1e-6;
 f_s_continuo = 1/T_s_continuo;
-velocity_time_update = 1e-3;
 
 % Define the CSV file name
 nombreArchivo = '../Docs/senales_del_5_10_23/senal_4/RefCurve_2023-10-05_1_154212.Wfm.bin';
@@ -50,8 +51,8 @@ datos = fread(fileID, [2 inf], 'float');
 fclose(fileID);
 
 % Extract the two columns into separate vectors
-x_continuo = datos(1, fix(length(datos)/10)+1250000:fix(length(datos)*4/10));
-y_continuo = datos(2, fix(length(datos)/10)+1250000:fix(length(datos)*4/10));
+x_continuo = datos(1, fix(length(datos)/10):fix(length(datos)*4/10));
+y_continuo = datos(2, fix(length(datos)/10):fix(length(datos)*4/10));
 
 %Filtrado analogico
 % Frecuencia de corte para el filtro pasabajos (un poco menos de 130 kHz)
@@ -124,9 +125,8 @@ continuous_displacement_vector = (1:length(x_discreto));
 actual_velocity_vector = (1:length(x_discreto));
 
 reset = 1;
-x_mem_length = 3;
 T_s_adc = t_s_discreto;
-
+counter = 0;
 for i = 1:1:length(x_discreto)
         
     

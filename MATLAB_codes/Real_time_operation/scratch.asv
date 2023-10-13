@@ -1,0 +1,25 @@
+clear all
+close all
+clc
+
+T_s = 0.005;
+F_s = 1/T_s;
+
+T = 0.1;
+F = 1/T;
+
+t = (0:T_s:5*T);
+rng default  %initialize random number generator
+x = sin(2*pi*t/T) + 1*rand(size(t));
+
+f_cut = F_s / 
+
+b = fir1(5,F_s/)
+windowSize = 5; 
+
+
+b = fir1();
+a = 1;
+y = filter(b,a,x);
+
+plot(t,x)
