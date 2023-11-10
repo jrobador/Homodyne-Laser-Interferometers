@@ -3,6 +3,7 @@
 %clc
 
 %Frecuencia de muestreo:
+
 f_max =   150e3;
 tau = 15e-5;
 
@@ -13,15 +14,25 @@ DC_y = 2.4051;
 %Parametro de simulación
 nciclos         = 75;                %Cantidad de ciclos simulados
 
-% Define el nombre del archivo CSV
-nombreArchivo = '../Docs/RefCurve_2023-06-15_1_192016.csv';
+% Define the file name
+nombreArchivo = '../Docs/señales del 28_09_23/señales_corregidas/señal_3/RefCurve_2023-09-28_5_171216.Wfm.csv';
 
-% Lee el archivo CSV
-datos = csvread(nombreArchivo);
+% Specify the delimiter and decimal separator (if needed)
+delimiter = ';';  % Assuming semicolons are used as delimiters
+decimalSeparator = ',';  % Assuming commas are used as decimal separators
+
+% Read the CSV file using readmatrix
+datos = readmatrix(nombreArchivo, 'Delimiter', delimiter, 'DecimalSeparator', decimalSeparator);
 
 % Extrae las dos columnas en vectores separados
 x_continuo = datos(:, 1)';
 y_continuo = datos(:, 2)';
+
+figure
+plot(x_continuo)
+
+DC_x_ = mean(x_continuo(1.38e6:1.54e6));
+DC_y_ = mean(y_continuo(1.38e6:1.54e6));
 
 x_continuo = x_continuo(1:fix(1*length(x_continuo)));
 y_continuo = y_continuo(1:fix(1*length(y_continuo)));

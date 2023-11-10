@@ -10,14 +10,12 @@ function [discrete_displacement,continuous_displacement,actual_velocity] = real_
     persistent actual_velocity_mem;
     persistent b;
     persistent a;
-
+    persistent initialization;
 
     
     %--------- A partir de aca es el código en tiempo real -------------
     % Bloquear funcionamiento hasta ingreso de nuevas muestras del ADC
     
-    %-------- INICIALIZACIONES GENERALES
-    global counter;
     global T_s_adc;
     
     x_mem_length_algorithm = 3;
@@ -30,9 +28,14 @@ function [discrete_displacement,continuous_displacement,actual_velocity] = real_
     %-----------------------------
     %-------- CALCULOS INICIALES
     
-    counter = counter + 1 ; 
+    %-------- INICIALIZACIONES GENERALES
+    if(isempty(initialization))
+    
+        initialization = 1 ;
 
-    if(counter == 1)
+
+
+        
         F_s_adc = 1 / T_s_adc;
 
         f_locked = v_locked / (light_wave_length/2);
@@ -83,7 +86,7 @@ function [discrete_displacement,continuous_displacement,actual_velocity] = real_
         [cycle_counter,cycle_counter_direction] = cycle_counter_calculation(x_mem(end),y_mem(end),x_mem(end-1-(x_mem_length_algorithm-1):end-1),y_mem(end-1-(y_mem_length_algorithm-1):end-1),cycle_counter_direction,cycle_counter);
 
 
-        if(abs(actual_velocity_mem) <= 6.25)
+        if(abs(actual_velocity_mem) <= v_locked)
             x_mem_filtered = filter(b,a,x_mem);
             y_mem_filtered = filter(b,a,y_mem);
             phi_actual = phase_calculation(dot(b, x_mem),dot(b, y_mem), cycle_counter);
