@@ -21,6 +21,7 @@ function [discrete_displacement,continuous_displacement,actual_velocity] = real_
     x_mem_length_algorithm = 3;
     y_mem_length_algorithm = 1;
     mem_length_filter = 100;
+    actual_index = fix(mem_length_filter/2);
     velocity_time_update = 1e-3;
     light_wave_length = 500e-9;
     v_locked = 6.25e-6;
@@ -41,7 +42,7 @@ function [discrete_displacement,continuous_displacement,actual_velocity] = real_
         f_locked = v_locked / (light_wave_length/2);
         f_untracked = v_untracked / (light_wave_length/2);
 
-        f_locked_norm = f_locked / (F_s_adc/2); %(frecuencia chequeable normalizada) 
+        f_locked_norm = f_untracked / (F_s_adc/2); %(frecuencia chequeable normalizada) 
         f_cut_norm = f_locked_norm * 2 ;
 
         b = fir1(mem_length_filter-1,f_cut_norm);
@@ -71,8 +72,8 @@ function [discrete_displacement,continuous_displacement,actual_velocity] = real_
 
     if(ADC_NEW_SAMPLES)
         % Actualizacion de memorias
-        x_mem = [x_mem(end - (mem_length_filter-2):end),x_actual];
-        y_mem = [y_mem(end - (mem_length_filter-2):end),y_actual];
+        x_mem = [x_mem(2:end),x_actual];
+        y_mem = [y_mem(2:end),y_actual];
         
         
         velocity_counter_update = velocity_counter_update + 1;
@@ -83,26 +84,20 @@ function [discrete_displacement,continuous_displacement,actual_velocity] = real_
 
 
 
-        [cycle_counter,cycle_counter_direction] = cycle_counter_calculation(x_mem(end),y_mem(end),x_mem(end-1-(x_mem_length_algorithm-1):end-1),y_mem(end-1-(y_mem_length_algorithm-1):end-1),cycle_counter_direction,cycle_counter);
+        [cycle_counter,cycle_counter_direction] = cycle_counter_calculation(x_mem(actual_index),y_mem(actual_index),x_mem(actual_index-1-(x_mem_length_algorithm-1):actual_index-1),y_mem(actual_index-1-(y_mem_length_algorithm-1):actual_index-1),cycle_counter_direction,cycle_counter);
 
 
         if(abs(actual_velocity_mem) <= v_locked)
-            x_mem_filtered = filter(b,a,x_mem);
-            y_mem_filtered = filter(b,a,y_mem);
             phi_actual = phase_calculation(dot(b, x_mem),dot(b, y_mem), cycle_counter);
-            f = dot(b, x_mem);
-            f2 = x_mem_filtered(end);
-            g = dot(b, y_mem);
-            g2 = x_mem_filtered(end);
         else
-            phi_actual = phase_calculation(x_mem(end),y_mem(end), cycle_counter);
+            phi_actual = phase_calculation(x_mem(actual_index),y_mem(actual_index), cycle_counter);
         end
 
 
         discrete_displacement = (light_wave_length/2) * cycle_counter;
         continuous_displacement = (light_wave_length/2)/(2*pi) * (phi_actual-phi_t0);        
 
-        if(velocity_counter_update * T_s_adc >= velocity_time_update) % 50 milisegundos
+        if(velocity_counter_update * T_s_adc >= velocity_time_update) 
 
             velocity_counter_update = 0;
             actual_velocity_mem = (continuous_displacement - continuous_displacement_mem) / velocity_time_update;
